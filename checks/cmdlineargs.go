@@ -2,19 +2,21 @@ package checks
 
 import (
 	"os"
+
+	"dev.sgwrth/txtcompr/errors"
 )
 
-func IsArgPresent(args []string) bool {
-	if len(args) < 2 {
-		return false
+func IsArgPresent(args []string) {
+	noArg := len(args) == 1
+	argIsEmptyString := args[1] == ""
+	if noArg || argIsEmptyString {
+		errors.NoArgPresent()
 	}
-	return true
 }
 
-func FileExists(path string) bool {
+func FileExists(path string) {
 	_, err := os.Stat(path)
 	if err != nil {
-		return true
+		errors.InvalidFilepath(err)
 	}
-	return false
 }

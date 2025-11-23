@@ -5,15 +5,11 @@ import (
 	"os"
 
 	"dev.sgwrth/txtcompr/checks"
-	"dev.sgwrth/txtcompr/errors"
+	// "dev.sgwrth/txtcompr/errors"
 )
 
 func main() {
-	pathArgPresent := checks.IsArgPresent(os.Args)
-	if !pathArgPresent {
-		errors.NoArgPresent()
-		return
-	}
+	checks.IsArgPresent(os.Args)
 	txtFilePath := os.Args[1]
 	checks.FileExists(txtFilePath)
 	// file = openTxtFile(path)

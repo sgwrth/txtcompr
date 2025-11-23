@@ -1,9 +1,13 @@
 package errors
 
 import (
-	"fmt"
+	"log"
 )
 
 func NoArgPresent() {
-	fmt.Println("Missing path argument.")
+	log.Fatal("Error: missing filepath")
+}
+
+func InvalidFilepath(err error) {
+	log.Fatalf("Error: %v", err)
 }
