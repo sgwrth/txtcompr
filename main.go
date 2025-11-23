@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	//	"fmt"
 	"os"
 
 	"dev.sgwrth/txtcompr/checks"
@@ -15,7 +15,7 @@ func main() {
 		return
 	}
 	txtFilePath := os.Args[1]
-	fmt.Println(txtFilePath)
+	checks.FileExists(txtFilePath)
 	// file = openTxtFile(path)
 	// fileCompressed = compressFile(file)
 	// saveFile(fileCompressed)
