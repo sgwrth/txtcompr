@@ -1,7 +1,7 @@
 package process
 
 import (
-	// "bufio"
+	"bufio"
 	"os"
 )
 
@@ -12,6 +12,13 @@ func CompressFile(file *os.File) {
 
 func GetTokens(file *os.File) []string {
 	var tokens []string
-	// scanner := bufio.NewScanner(file)
+	scanner := bufio.NewScanner(file)
+	scanner.Split(bufio.ScanWords)
+	for scanner.Scan() {
+		token := scanner.Text()
+		if len(token) >= 2 {
+			tokens = append(tokens, token)
+		}
+	}
 	return tokens
 }
