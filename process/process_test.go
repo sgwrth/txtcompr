@@ -14,3 +14,22 @@ func TestTokenize(t *testing.T) {
 		t.Errorf("Wrong length of tokens slice: %v", tokensLen)
 	}
 }
+
+func TestCountOccurrences(t *testing.T) {
+	tokens := GetTokens(files.OpenFile("../data/arose.txt"))
+	roseOccurrences := CountOccurrences("rose", tokens)
+	if roseOccurrences != 3 {
+		t.Errorf("Wrong number of occurrences: %v", roseOccurrences)
+	}
+}
+
+func TestBuildFreqMap(t *testing.T) {
+	tokens := GetTokens(files.OpenFile("../data/arose.txt"))
+	freqMap := BuildFreqMap(tokens)
+	if freqMap["rose"] != 3 {
+		t.Errorf("Wrong frequency count: %v", freqMap["rose"])
+	}
+	if freqMap["is"] != 2 {
+		t.Errorf("Wrong frequency count: %v", freqMap["is"])
+	}
+}
