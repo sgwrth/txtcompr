@@ -41,3 +41,13 @@ func BuildFreqMap(tokens []string) map[string]int {
 	}
 	return freqMap
 }
+
+func BuildDict(freqMap map[string]int) map[string]byte {
+	dict := make(map[string]byte)
+	return dict
+}
+
+func KeysOfMap(stringIntMap map[string]int) []string {
+	stringSlice := []string{"foo", "bar"}
+	return stringSlice
+}
