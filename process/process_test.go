@@ -23,9 +23,9 @@ func TestCountOccurrences(t *testing.T) {
 	}
 }
 
-func TestBuildFreqMap(t *testing.T) {
+func TestFreqMap(t *testing.T) {
 	tokens := GetTokens(files.OpenFile("../data/arose.txt"))
-	freqMap := BuildFreqMap(tokens)
+	freqMap := FreqMap(tokens)
 	if freqMap["rose"] != 3 {
 		t.Errorf("Wrong frequency count: %v", freqMap["rose"])
 	}
@@ -57,9 +57,9 @@ func TestKeysOfMap(t *testing.T) {
 
 func TestSortedKeysOfMap(t *testing.T) {
 	stringIntMap := map[string]int{
-		"one":   404,
+		"one":   42,
 		"two":   69,
-		"three": 42,
+		"three": 404,
 	}
 	keys := KeysSortedByVal(stringIntMap)
 	if len(keys) != 3 {
@@ -73,5 +73,21 @@ func TestSortedKeysOfMap(t *testing.T) {
 	}
 	if keys[2] != "one" {
 		t.Errorf("Wrong value (%v) at index 2", keys[2])
+	}
+}
+
+func TestDuplicateEntries(t *testing.T) {
+	file := files.OpenFile("../data/arose.txt")
+	tokens := GetTokens(file)
+	freqMap := FreqMap(tokens)
+	entries := DuplicateEntries(freqMap)
+	if len(entries) != 2 { // 'rose', 'is'
+		t.Errorf("Wrong length of entries: %v", len(entries))
+	}
+	if entries[0].word != "rose" {
+		t.Errorf("Wrong top entry: %v", entries[0].word)
+	}
+	if entries[1].word != "is" {
+		t.Errorf("Wrong runner-up entry: %v", entries[1].word)
 	}
 }
