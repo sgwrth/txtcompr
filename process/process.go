@@ -4,7 +4,13 @@ import (
 	"bufio"
 	// "encoding/base64"
 	"os"
+	"sort"
 )
+
+type entry struct {
+	word  string
+	count int
+}
 
 func CompressFile(file *os.File) {
 	// defer file.Close()
@@ -17,7 +23,7 @@ func GetTokens(file *os.File) []string {
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
 		token := scanner.Text()
-		if len(token) >= 2 {
+		if len(token) >= 2 { // Magic number.
 			tokens = append(tokens, token)
 		}
 	}
@@ -42,12 +48,28 @@ func BuildFreqMap(tokens []string) map[string]int {
 	return freqMap
 }
 
-func BuildDict(freqMap map[string]int) map[string]byte {
-	dict := make(map[string]byte)
-	return dict
+func DuplicateEntries(freqMap map[string]int) []entry {
+	var entries []entry
+	return entries
 }
 
 func KeysOfMap(stringIntMap map[string]int) []string {
-	stringSlice := []string{"foo", "bar"}
-	return stringSlice
+	keys := make([]string, 0, len(stringIntMap))
+	for key, _ := range stringIntMap {
+		keys = append(keys, key)
+	}
+	return keys
+}
+
+func KeysSortedByVal(stringIntMap map[string]int) []string {
+	keys := KeysOfMap(stringIntMap)
+	sort.Slice(keys, func(i, j int) bool {
+		return stringIntMap[keys[i]] < stringIntMap[keys[j]]
+	})
+	return keys
+}
+
+func BuildDict(freqMap map[string]int) map[string]byte {
+	dict := make(map[string]byte)
+	return dict
 }

@@ -54,3 +54,24 @@ func TestKeysOfMap(t *testing.T) {
 		t.Errorf("Wrong value (%v) at index 2", keys[2])
 	}
 }
+
+func TestSortedKeysOfMap(t *testing.T) {
+	stringIntMap := map[string]int{
+		"one":   404,
+		"two":   69,
+		"three": 42,
+	}
+	keys := KeysSortedByVal(stringIntMap)
+	if len(keys) != 3 {
+		t.Errorf("Wrong length of 'keys' slice: %v", len(keys))
+	}
+	if keys[0] != "three" {
+		t.Errorf("Wrong value (%v) at index 0", keys[0])
+	}
+	if keys[1] != "two" {
+		t.Errorf("Wrong value (%v) at index 1", keys[1])
+	}
+	if keys[2] != "one" {
+		t.Errorf("Wrong value (%v) at index 2", keys[2])
+	}
+}
