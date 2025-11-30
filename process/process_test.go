@@ -8,6 +8,7 @@ import (
 
 func TestTokenize(t *testing.T) {
 	file := files.OpenFile("../data/allwork.txt")
+	defer file.Close()
 	tokens := GetTokens(file)
 	tokensLen := len(tokens)
 	if tokensLen != 9 { // Not counting one-letter word 'a'.
@@ -16,7 +17,9 @@ func TestTokenize(t *testing.T) {
 }
 
 func TestCountOccurrences(t *testing.T) {
-	tokens := GetTokens(files.OpenFile("../data/arose.txt"))
+	file := files.OpenFile("../data/arose.txt")
+	defer file.Close()
+	tokens := GetTokens(file)
 	roseOccurrences := CountOccurrences("rose", tokens)
 	if roseOccurrences != 3 {
 		t.Errorf("Wrong number of occurrences: %v", roseOccurrences)
@@ -78,6 +81,7 @@ func TestSortedKeysOfMap(t *testing.T) {
 
 func TestDuplicateEntries(t *testing.T) {
 	file := files.OpenFile("../data/arose.txt")
+	defer file.Close()
 	tokens := GetTokens(file)
 	freqMap := FreqMap(tokens)
 	entries := DuplicateEntries(freqMap)
@@ -89,5 +93,28 @@ func TestDuplicateEntries(t *testing.T) {
 	}
 	if entries[1].word != "is" {
 		t.Errorf("Wrong runner-up entry: %v", entries[1].word)
+	}
+}
+
+func TestBuildDict(t *testing.T) {
+	file := files.OpenFile("../data/arose.txt")
+	defer file.Close()
+	tokens := GetTokens(file)
+	freqMap := FreqMap(tokens)
+	duplicateEntries := DuplicateEntries(freqMap)
+	dict := BuildDict(duplicateEntries)
+	_, ok := dict["rose"]
+	if !ok {
+		t.Errorf("Dict entry 'rose' missing")
+	}
+	if dict["rose"] != byte(1) {
+		t.Errorf("Wrong value for 'rose': %v", dict["rose"])
+	}
+	_, ok = dict["is"]
+	if !ok {
+		t.Errorf("Dict entry 'is' missing")
+	}
+	if dict["is"] != byte(2) {
+		t.Errorf("Wrong value for 'is': %v", dict["is"])
 	}
 }

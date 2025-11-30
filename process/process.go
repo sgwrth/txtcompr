@@ -69,7 +69,15 @@ func KeysSortedByVal(stringIntMap map[string]int) []string {
 	return keys
 }
 
-func BuildDict(freqMap map[string]int) map[string]byte {
+func BuildDict(entries []Entry) map[string]byte {
 	dict := make(map[string]byte)
+	code := byte(1)
+	for _, e := range entries {
+		dict[e.word] = code
+		code++
+	}
 	return dict
+}
+
+func CompressedText(tokens []string, dict map[string]byte) {
 }
