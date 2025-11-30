@@ -2,6 +2,7 @@ package process
 
 import (
 	"bufio"
+	"bytes"
 	"os"
 	"sort"
 )
@@ -79,5 +80,16 @@ func BuildDict(entries []Entry) map[string]byte {
 	return dict
 }
 
-func CompressedText(tokens []string, dict map[string]byte) {
+func CompressedTextBytes(tokens []string, dict map[string]byte) []byte {
+	var compressedText bytes.Buffer
+	ESCAPE := byte(0)
+	for _, word := range tokens {
+		if code, ok := dict[word]; ok {
+			compressedText.WriteByte(code)
+		} else {
+			compressedText.WriteByte(ESCAPE)
+			compressedText.WriteString(word + " ")
+		}
+	}
+	return compressedText.Bytes()
 }

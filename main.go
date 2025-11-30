@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "fmt"
 	"os"
 
 	"dev.sgwrth/txtcompr/checks"
@@ -14,6 +13,12 @@ func main() {
 	txtFilePath := os.Args[1]
 	checks.FileExists(txtFilePath)
 	txtFile := files.OpenFile(txtFilePath)
-	process.CompressFile(txtFile)
+	tokens := process.GetTokens(txtFile)
+	freqMap := process.FreqMap(tokens)
+	duplicateEntries := process.DuplicateEntries(freqMap)
+	dict := process.BuildDict(duplicateEntries)
+	compressedTextBytes := process.CompressedTextBytes(tokens, dict)
+	files.SaveCompressedText(compressedTextBytes, "./output/arose")
+	// process.CompressFile(txtFile)
 	// saveFile(fileCompressed)
 }
