@@ -17,41 +17,20 @@ func GetTokens(file *os.File) []string {
 	scanner := bufio.NewScanner(file)
 	scanner.Split(bufio.ScanWords)
 	for scanner.Scan() {
-		token := scanner.Text()
-		if len(token) >= 2 { // Magic number.
-			tokens = append(tokens, token)
-		}
+		word := scanner.Text()
+		tokens = append(tokens, word)
 	}
 	return tokens
-}
-
-func CountOccurrences(token string, tokens []string) int {
-	counter := 0
-	for _, element := range tokens {
-		if element == token {
-			counter++
-		}
-	}
-	return counter
 }
 
 func FreqMap(tokens []string) map[string]int {
 	freqMap := make(map[string]int)
 	for _, token := range tokens {
-		freqMap[token]++
-	}
-	return freqMap
-}
-
-func DuplicateEntries(freqMap map[string]int) []Entry {
-	sortedKeys := KeysSortedByVal(freqMap)
-	var entries []Entry
-	for _, key := range sortedKeys {
-		if freqMap[key] > 1 {
-			entries = append(entries, Entry{key, freqMap[key]})
+		if len(token) > 1 {
+			freqMap[token]++
 		}
 	}
-	return entries
+	return freqMap
 }
 
 func KeysOfMap(stringIntMap map[string]int) []string {
@@ -68,6 +47,17 @@ func KeysSortedByVal(stringIntMap map[string]int) []string {
 		return stringIntMap[keys[i]] > stringIntMap[keys[j]]
 	})
 	return keys
+}
+
+func DuplicateEntries(freqMap map[string]int) []Entry {
+	sortedKeys := KeysSortedByVal(freqMap)
+	var entries []Entry
+	for _, key := range sortedKeys {
+		if freqMap[key] > 1 {
+			entries = append(entries, Entry{key, freqMap[key]})
+		}
+	}
+	return entries
 }
 
 func BuildDict(entries []Entry) map[string]byte {

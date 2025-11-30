@@ -11,18 +11,8 @@ func TestTokenize(t *testing.T) {
 	defer file.Close()
 	tokens := GetTokens(file)
 	tokensLen := len(tokens)
-	if tokensLen != 9 { // Not counting one-letter word 'a'.
+	if tokensLen != 10 {
 		t.Errorf("Wrong length of tokens slice: %v", tokensLen)
-	}
-}
-
-func TestCountOccurrences(t *testing.T) {
-	file := files.OpenFile("../data/arose.txt")
-	defer file.Close()
-	tokens := GetTokens(file)
-	roseOccurrences := CountOccurrences("rose", tokens)
-	if roseOccurrences != 3 {
-		t.Errorf("Wrong number of occurrences: %v", roseOccurrences)
 	}
 }
 
