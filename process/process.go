@@ -83,3 +83,32 @@ func CompressedTextBytes(tokens []string, dict map[string]byte) []byte {
 	}
 	return compressedText.Bytes()
 }
+
+func DictAsBinary(dict map[string]byte) []byte {
+	var dictAsBytes bytes.Buffer
+	dictAsBytes.WriteByte(byte(len(dict)))
+
+	for word, code := range dict {
+		dictAsBytes.WriteByte(code)
+		dictAsBytes.WriteByte(byte(len(word)))
+		dictAsBytes.WriteString(word)
+	}
+
+	return dictAsBytes.Bytes()
+}
+
+func WriteDictAndTextToFile(filePath string, dict []byte, compressedText []byte) error {
+	file, err := os.Create(filePath)
+	if err != nil {
+		return err
+	}
+
+	_, err = file.Write(dict)
+
+	if err != nil {
+		return err
+	}
+
+	_, err = file.Write(compressedText)
+	return err
+}

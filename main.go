@@ -18,7 +18,9 @@ func main() {
 	duplicateEntries := process.DuplicateEntries(freqMap)
 	dict := process.BuildDict(duplicateEntries)
 	compressedTextBytes := process.CompressedTextBytes(tokens, dict)
-	files.SaveCompressedText(compressedTextBytes, "./output/arose")
+	// files.SaveCompressedText(compressedTextBytes, "./output/arose")
+	dictAsBytes := process.DictAsBinary(dict)
+	process.WriteDictAndTextToFile("./output/arose", dictAsBytes, compressedTextBytes)
 	// process.CompressFile(txtFile)
 	// saveFile(fileCompressed)
 }
