@@ -21,6 +21,7 @@ func main() {
 	// files.SaveCompressedText(compressedTextBytes, "./output/arose")
 	dictAsBytes := process.DictAsBinary(dict)
 	process.WriteDictAndTextToFile("./output/arose", dictAsBytes, compressedTextBytes)
+	process.DecompressFile("./output/arose")
 	// process.CompressFile(txtFile)
 	// saveFile(fileCompressed)
 }

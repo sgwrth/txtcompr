@@ -3,8 +3,10 @@ package process
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"os"
 	"sort"
+	"strings"
 )
 
 func CompressFile(file *os.File) {
@@ -113,10 +115,11 @@ func WriteDictAndTextToFile(filePath string, dict []byte, compressedText []byte)
 	return err
 }
 
-func RecreateDict(dictLen int, file []byte, startingPos int) map[byte]string {
+func RecreateDict(file []byte, startingPos int) (map[byte]string, int) {
+	dictLen := int(file[0])
 	dict := make(map[byte]string)
 	bytePos := startingPos
-	for i := 0; i < dictLen; i++ {
+	for range dictLen {
 		code := file[bytePos]
 		bytePos++
 		wordLen := file[bytePos]
@@ -128,7 +131,29 @@ func RecreateDict(dictLen int, file []byte, startingPos int) map[byte]string {
 		}
 		dict[code] = wordAsByte.String()
 	}
-	return dict
+	return dict, bytePos
+}
+
+func DecodeText(file []byte, startingPos int, dict map[byte]string) []string {
+	var tokens []string
+	bytePos := startingPos
+	for bytePos < len(file) {
+		if file[bytePos] != byte(0) {
+			tokens = append(tokens, dict[file[bytePos]])
+			bytePos++
+		} else {
+			bytePos++
+			delimiter := byte(' ')
+			var word bytes.Buffer
+			for file[bytePos] != delimiter && bytePos < len(file) {
+				word.WriteByte(file[bytePos])
+				bytePos++
+			}
+			tokens = append(tokens, word.String())
+			bytePos++
+		}
+	}
+	return tokens
 }
 
 func DecompressFile(filepath string) {
@@ -138,5 +163,7 @@ func DecompressFile(filepath string) {
 		panic(err)
 	}
 
-	dictLen := int(file[0])
+	dict, startingPosCompressedText := RecreateDict(file, 1)
+	tokens := DecodeText(file, startingPosCompressedText, dict)
+	fmt.Println(strings.Join(tokens, " "))
 }
