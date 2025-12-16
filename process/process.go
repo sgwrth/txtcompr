@@ -112,3 +112,31 @@ func WriteDictAndTextToFile(filePath string, dict []byte, compressedText []byte)
 	_, err = file.Write(compressedText)
 	return err
 }
+
+func RecreateDict(dictLen int, file []byte, startingPos int) map[byte]string {
+	dict := make(map[byte]string)
+	bytePos := startingPos
+	for i := 0; i < dictLen; i++ {
+		code := file[bytePos]
+		bytePos++
+		wordLen := file[bytePos]
+		var wordAsByte bytes.Buffer
+		bytePos++
+		for j := 0; j < int(wordLen); j++ {
+			wordAsByte.WriteByte(file[bytePos])
+			bytePos++
+		}
+		dict[code] = wordAsByte.String()
+	}
+	return dict
+}
+
+func DecompressFile(filepath string) {
+	file, err := os.ReadFile(filepath)
+
+	if err != nil {
+		panic(err)
+	}
+
+	dictLen := int(file[0])
+}
