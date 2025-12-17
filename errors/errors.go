@@ -4,10 +4,10 @@ import (
 	"log"
 )
 
-func NoArgPresent() {
-	log.Fatal("Error: missing filepath")
+func MissingArg() {
+	log.Fatal("Missing argument(s)")
 }
 
 func InvalidFilepath(err error) {
-	log.Fatalf("Error: %v", err)
+	log.Fatalf("Invalid filepath: %v", err)
 }

@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	checks.IsArgPresent(os.Args)
+	checks.AreArgsPresent(os.Args)
 	filePath := os.Args[1]
 	checks.FileExists(filePath)
 
