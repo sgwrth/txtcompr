@@ -9,11 +9,6 @@ import (
 	"strings"
 )
 
-func CompressFile(file *os.File) {
-	// defer file.Close()
-	// tokens := GetTokens(file)
-}
-
 func GetTokens(file *os.File) []string {
 	var tokens []string
 	scanner := bufio.NewScanner(file)
@@ -97,22 +92,6 @@ func DictAsBinary(dict map[string]byte) []byte {
 	}
 
 	return dictAsBytes.Bytes()
-}
-
-func WriteDictAndTextToFile(filePath string, dict []byte, compressedText []byte) error {
-	file, err := os.Create(filePath)
-	if err != nil {
-		return err
-	}
-
-	_, err = file.Write(dict)
-
-	if err != nil {
-		return err
-	}
-
-	_, err = file.Write(compressedText)
-	return err
 }
 
 func RecreateDict(file []byte, startingPos int) (map[byte]string, int) {

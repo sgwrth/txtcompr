@@ -10,18 +10,9 @@ import (
 
 func main() {
 	checks.IsArgPresent(os.Args)
-	txtFilePath := os.Args[1]
-	checks.FileExists(txtFilePath)
-	txtFile := files.OpenFile(txtFilePath)
-	tokens := process.GetTokens(txtFile)
-	freqMap := process.FreqMap(tokens)
-	duplicateEntries := process.DuplicateEntries(freqMap)
-	dict := process.BuildDict(duplicateEntries)
-	compressedTextBytes := process.CompressedTextBytes(tokens, dict)
-	// files.SaveCompressedText(compressedTextBytes, "./output/arose")
-	dictAsBytes := process.DictAsBinary(dict)
-	process.WriteDictAndTextToFile("./output/arose", dictAsBytes, compressedTextBytes)
-	process.DecompressFile("./output/arose")
-	// process.CompressFile(txtFile)
-	// saveFile(fileCompressed)
+	filePath := os.Args[1]
+	checks.FileExists(filePath)
+
+	files.WriteCompressedFile(filePath)
+	process.DecompressFile("./output/arose2")
 }
